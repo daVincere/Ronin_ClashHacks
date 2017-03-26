@@ -10,7 +10,7 @@ faceCascade = cv2.CascadeClassifier(cascPath)
 # 3 face recognizers
 # Eigen, Fisher and LBPH Face Regognizer
 # recognizer = cv2.createLBPHFaceRecognizer()  for OpenCV2
-recognizer = cv2.face.createLBPHFaceRecognizer()
+recognizer = cv2.face.createEigenFaceRecognizer()
 
 def get_images_and_labels(path):
     image_path = [os.path.join(path, f)for f in os.listdir(path) if not f.endswith('.sad')]
