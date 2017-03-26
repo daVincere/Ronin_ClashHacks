@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "Hasime's Ronin",
+  "version": "0.1",
+  "content_scripts":[
+      {
+          "matches": [
+              "<all_urls>"
+          ],
+          "js":["jquery-3.2.0.js","content.js"]
+      }
+  ],
+  "browser_action": {
+      "default_icon": "icon.png"
+  },
+  "background":{
+      "scripts":["background.js"]
+  }
+}
+
+// "matches" makes content.js 
+// get injected into every html page
+//  every url
+

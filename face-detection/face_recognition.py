@@ -3,13 +3,14 @@ import cv2, os
 import numpy as np
 from PIL import Image
 
-cascPath = sys.argv[1]
+cascPath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascPath) 
 
 # recognizer has fns like FaceRecognizer.train and FaceRecognizer.pridict
 # 3 face recognizers
 # Eigen, Fisher and LBPH Face Regognizer
-recognizer = cv2.createLBPHFaceRecognizer()
+# recognizer = cv2.createLBPHFaceRecognizer()  for OpenCV2
+recognizer = cv2.face.createLBPHFaceRecognizer()
 
 def get_images_and_labels(path):
     image_path = [os.path.join(path, f)for f in os.listdir(path) if not f.endswith('.sad')]
@@ -31,13 +32,13 @@ def get_images_and_labels(path):
 
         for (x,y,w,h) in faces:
             # 
-            images.append(image[y: y+h, x=x+w])
+            images.append(image[y: y+h, x:x+w])
             # adds the mood of the persion to the name
             labels.append(nbr)
             cv2.imshow("Adding faces for trainig:", images)
             # which key?
             cv2.waitKey(50)
-return images, labels
+    return images, labels
 
 # "path" for the training set
 path = 'yalefaces'
@@ -70,4 +71,9 @@ for image_path in image_paths:
         nbr_predicted, conf = recognizer.predict(predict_image[y:y+h, x:x+w])
         nbr_actual = int(os.path.split(image_path)[1].split(".")[0].replace("subject", ""))
         
-        if 
+        if nbr_actual == nbr_predicted:
+            print "{} is Correctly Recognized with confidence {}".format(nbr_actual, conf)
+        else:
+            print "{} is Incorrectly Recognized as {}".format(nbr_actual, nbr_predicted)
+            cv2.imshow("Recognizing Face", predict_image[y: y + h, x: x + w])
+            cv2.waitKey(1000) 
